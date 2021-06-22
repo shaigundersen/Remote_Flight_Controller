@@ -1,0 +1,2 @@
+rootProject.name = "Remote_Flight_Controller"
+include ':app'

@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Remote_Flight_Controller</string>
+    <string name="ip">Enter IP:</string>
+    <string name="port">Enter PORT:</string>
+    <string name="progressBarText">Connecting to flight gear…</string>
+    <string name="ipPlaceHolder">XXX.XXX.XXX.XXX</string>
+    <string name="portPlaceHolder">Between 1 and 65,535</string>
+    <string name="connect">Connect to FG</string>
+    <string name="disconnect">Disconnect from FG</string>
+    <string name="rudder">Rudder</string>
+    <string name="throttle">Throttle</string>
+    <string name="connectionError">Connection Error!</string>
+    <string name="connectionErrorMsg">Please make sure flight gear is up and running on the provided ip and port, then try again</string>
+</resources>

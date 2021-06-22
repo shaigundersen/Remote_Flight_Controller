@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="vm"
+            type="com.example.remote_flight_controller.viewmodels.MainViewModel" />
+        <import type="android.view.View"/>
+        <import type="android.graphics.Color"/>
+    </data>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- First Frame: user input fields -->
+        <LinearLayout
+            android:id="@+id/mainFrame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:background="@drawable/custom_border"
+                android:layout_marginTop="50dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginEnd="45dp" >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:text="@string/ip"
+                    android:background="@drawable/custom_border"
+                    style="@style/TextAppearance.AppCompat.Body2" />
+
+                <EditText
+                    android:id="@+id/ipInput"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:text="@={vm.ip}"
+                    android:background="@{vm.feedbackIp.equals(`invalid ip`) ? Color.argb(50,255,0,0) : Color.TRANSPARENT}"
+                    android:inputType="phone"
+                    android:hint="@string/ipPlaceHolder" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:background="@drawable/custom_border"
+                android:layout_marginStart="45dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginBottom="25dp" >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:text="@string/port"
+                    android:background="@drawable/custom_border"
+                    style="@style/TextAppearance.AppCompat.Body2"/>
+
+                <EditText
+                    android:id="@+id/portInput"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:background="@{vm.feedbackPort.equals(`invalid port`) ? Color.argb(50,255,0,0) : Color.TRANSPARENT}"
+                    android:padding="10dp"
+                    android:text="@={vm.port}"
+                    android:inputType="phone"
+                    android:hint="@string/portPlaceHolder" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/connectButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="45dp"
+                android:layout_marginEnd="45dp"
+                android:text="@string/connect"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/animationHolder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+
+                    <ProgressBar
+                        android:id="@+id/connectionProgressBar"
+                        android:layout_width="400dp"
+                        android:layout_height="400dp"
+                        android:indeterminateOnly="false"
+                        android:progressDrawable="@drawable/custom_progress_bar"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:progress="60" />
+
+                    <TextView
+                        android:layout_width="290dp"
+                        android:layout_height="275dp"
+                        android:gravity="center"
+                        android:text="@string/progressBarText"
+                        android:textSize="40sp"
+                        style="@style/TextAppearance.AppCompat.Body2"
+                        app:layout_constraintBottom_toBottomOf="@+id/connectionProgressBar"
+                        app:layout_constraintEnd_toEndOf="@+id/connectionProgressBar"
+                        app:layout_constraintStart_toStartOf="@+id/connectionProgressBar"
+                        app:layout_constraintTop_toTopOf="@+id/connectionProgressBar" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <LinearLayout
+                    android:id="@+id/connectionError"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.4"
+                        android:gravity="center"
+                        android:text="@string/connectionError"
+                        android:textSize="40sp"
+                        style="@style/TextAppearance.AppCompat.Body2"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.8"
+                        android:gravity="top|center"
+                        android:text="@string/connectionErrorMsg"
+                        android:textSize="25sp"
+                        style="@style/TextAppearance.AppCompat.Body2"
+                        android:padding="20dp"/>
+                </LinearLayout>
+
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Second Frame: joystick and flight control -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/joystickFrame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/inner"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@+id/rudderSeekBar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/throttleText"
+                        style="@style/TextAppearance.AppCompat.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="-15dp"
+                        android:layout_marginEnd="-15dp"
+                        android:gravity="center"
+                        android:rotation="270"
+                        android:text="@string/throttle" />
+
+                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
+                            android:id="@+id/throttleSeekBar"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:progressDrawable="@drawable/custom_progress"
+                            android:thumb="@drawable/custom_tumb"
+                            app:seekBarRotation="CW270" />
+                    </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
+                    <com.example.remote_flight_controller.views.Joystick
+                        android:id="@+id/joystick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="30dp" />
+                </LinearLayout>
+
+                <SeekBar
+                    android:id="@+id/rudderSeekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="200"
+                    android:paddingStart="30dp"
+                    android:progress="100"
+                    android:progressDrawable="@drawable/custom_progress"
+                    android:thumb="@drawable/custom_tumb"
+                    app:layout_constraintBottom_toTopOf="@+id/rudderText"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/rudderText"
+                    style="@style/TextAppearance.AppCompat.Body2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/rudder"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</layout>
